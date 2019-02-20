@@ -6,6 +6,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -24,6 +25,8 @@ public interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertArticle(Article coupon);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertArticles(List<Article> articles);
 
     @Query("DELETE FROM ARTICLES")
     void deleteAllArticles();

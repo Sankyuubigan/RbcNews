@@ -1,10 +1,16 @@
 package nildencorp.apps.rbcnews.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(tableName = Article.TABLE_NAME)
 public class Article {
-    private Source SourceObject=new Source();
+    @TypeConverters(Converters.class)
+    @PrimaryKey
+    @NonNull
+    private Source source;
     private String author;
     private String title;
     private String description;
@@ -18,7 +24,7 @@ public class Article {
     // Getter Methods
 
     public Source getSource() {
-        return SourceObject;
+        return source;
     }
 
     public String getAuthor() {
@@ -52,7 +58,7 @@ public class Article {
     // Setter Methods
 
     public void setSource(Source sourceObject) {
-        this.SourceObject = sourceObject;
+        this.source = sourceObject;
     }
 
     public void setAuthor(String author) {

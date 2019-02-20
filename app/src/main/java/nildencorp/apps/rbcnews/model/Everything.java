@@ -7,7 +7,10 @@ public class Everything {
     private float totalResults;
     ArrayList<Article> articles;
 
-    // Getter Methods
+    public ArrayList<Article> getArticles() {
+        return articles;
+    }
+// Getter Methods
 
     public String getStatus() {
         return status;
