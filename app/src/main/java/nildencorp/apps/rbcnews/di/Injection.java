@@ -23,9 +23,6 @@ import nildencorp.apps.rbcnews.model.ArticlesDatabase;
 import nildencorp.apps.rbcnews.model.LocalArticleDataSource;
 import nildencorp.apps.rbcnews.ui.ViewModelFactory;
 
-/**
- * Enables injection of data sources.
- */
 public class Injection {
 
     public static ArticleDao provideUserDataSource(Context context) {

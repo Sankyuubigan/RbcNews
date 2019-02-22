@@ -12,18 +12,12 @@ class ArticleViewModel extends ViewModel {
 
     private final ArticleDao mDataSource;
 
-    private Article mArticle;
-
     public ArticleViewModel(ArticleDao dataSource) {
         mDataSource = dataSource;
     }
 
     public Flowable<List<Article>> getArticles() {
-        return mDataSource.getArticles()
-                .map(articles -> {
-                    return articles;
-                });
-
+        return mDataSource.getArticles();
     }
 
 }

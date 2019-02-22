@@ -8,20 +8,29 @@ import androidx.room.TypeConverters;
 @Entity(tableName = Article.TABLE_NAME)
 public class Article {
     @TypeConverters(Converters.class)
-    @PrimaryKey
     @NonNull
     private Source source;
     private String author;
     private String title;
     private String description;
     private String url;
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
     private String urlToImage;
     private String publishedAt;
     private String content;
 
     public static final String TABLE_NAME = "articles";
 
-    // Getter Methods
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Source getSource() {
         return source;
@@ -54,8 +63,6 @@ public class Article {
     public String getContent() {
         return content;
     }
-
-    // Setter Methods
 
     public void setSource(Source sourceObject) {
         this.source = sourceObject;

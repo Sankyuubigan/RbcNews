@@ -22,9 +22,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-/**
- * The Room database that contains the Users table
- */
 @Database(entities = {Article.class}, version = 1)
 public abstract class ArticlesDatabase extends RoomDatabase {
 

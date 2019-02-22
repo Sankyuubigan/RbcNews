@@ -13,7 +13,6 @@ public class Converters {
     @TypeConverter
     public String sourceToStoredString(Source cl) {
         String value = "";
-
         value += cl.getId() + ",";
         value += cl.getName();
         return value;

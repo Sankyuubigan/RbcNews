@@ -2,7 +2,7 @@ package nildencorp.apps.rbcnews.model;
 
 import java.util.ArrayList;
 
-public class Everything {
+public class RbcNewsResponseObject {
     private String status;
     private float totalResults;
     ArrayList<Article> articles;
@@ -10,7 +10,6 @@ public class Everything {
     public ArrayList<Article> getArticles() {
         return articles;
     }
-// Getter Methods
 
     public String getStatus() {
         return status;
@@ -19,8 +18,6 @@ public class Everything {
     public float getTotalResults() {
         return totalResults;
     }
-
-    // Setter Methods
 
     public void setStatus(String status) {
         this.status = status;

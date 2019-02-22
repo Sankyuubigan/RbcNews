@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 @Dao
 public interface ArticleDao {
@@ -16,18 +15,15 @@ public interface ArticleDao {
     @Query("SELECT * FROM articles")
     Flowable<List<Article>> getArticles();
 
-//    @Query("SELECT * FROM ARTICLES WHERE store = :storeIn ")
-//    Maybe<Article> getArticleByStore(String storeIn);
-
-    @Query("SELECT * FROM ARTICLES LIMIT 1")
-    Single<Article> getOneArticle();
+    @Query("SELECT * FROM articles LIMIT 1")
+    Article getOneArticle();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertArticle(Article coupon);
+    Long insertArticle(Article article);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertArticles(List<Article> articles);
+    List<Long> insertArticles(List<Article> articles);
 
-    @Query("DELETE FROM ARTICLES")
-    void deleteAllArticles();
+    @Query("DELETE FROM articles")
+    Completable deleteAllArticles();
 }

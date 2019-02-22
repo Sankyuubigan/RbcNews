@@ -9,9 +9,6 @@ public class Source {
         this.name = name;
     }
 
-
-    // Getter Methods
-
     public String getId() {
         return id;
     }
@@ -19,8 +16,6 @@ public class Source {
     public String getName() {
         return name;
     }
-
-    // Setter Methods
 
     public void setId(String id) {
         this.id = id;
