@@ -58,7 +58,6 @@ public class LocalArticleDataSource implements ArticleDao {
     @Override
     public List<Long> insertArticles(List<Article> articles) {
         return mDataSource.insertArticles(articles);
-
     }
 
     @Override

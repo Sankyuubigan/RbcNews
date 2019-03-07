@@ -25,13 +25,20 @@ import nildencorp.apps.rbcnews.ui.ViewModelFactory;
 
 public class Injection {
 
-    public static ArticleDao provideUserDataSource(Context context) {
+    private static ViewModelFactory viewModelFactory;
+    private static LocalArticleDataSource localArticleDataSource;
+
+    private static ArticleDao provideUserDataSource(Context context) {
         ArticlesDatabase database = ArticlesDatabase.getInstance(context);
-        return new LocalArticleDataSource(database.articleDao());
+        if (localArticleDataSource == null)
+            localArticleDataSource = new LocalArticleDataSource(database.articleDao());
+        return localArticleDataSource;
     }
 
     public static ViewModelFactory provideViewModelFactory(Context context) {
         ArticleDao dataSource = provideUserDataSource(context);
-        return new ViewModelFactory(dataSource);
+        if (viewModelFactory == null)
+            viewModelFactory = new ViewModelFactory(dataSource);
+        return viewModelFactory;
     }
 }

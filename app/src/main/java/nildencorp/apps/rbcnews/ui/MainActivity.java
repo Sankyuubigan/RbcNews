@@ -2,6 +2,7 @@ package nildencorp.apps.rbcnews.ui;
 
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewModelFactory mViewModelFactory;
     private ArticleViewModel mViewModel;
     private ArticleAdapter mAdapter;
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
@@ -49,18 +50,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mViewModel.getArticles().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(articles1 -> {
-                    articles = articles1;
-                    mAdapter = new ArticleAdapter(this, articles);
-                    recyclerView.setAdapter(mAdapter);
-                });
+        mAdapter = new ArticleAdapter(articles);
+        recyclerView.setAdapter(mAdapter);
+        updateArticles();
     }
 
     public void updateArticles() {
         mViewModel.getArticles().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(articles1 -> {
-                    articles = articles1;
+                .subscribe(articlesList -> {
+                    articles = articlesList;
                     mAdapter.notifyDataSetChanged();
                 });
     }
