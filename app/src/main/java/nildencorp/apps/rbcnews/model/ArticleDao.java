@@ -6,24 +6,30 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import io.reactivex.Completable;
+import androidx.room.Transaction;
 import io.reactivex.Flowable;
 
 @Dao
-public interface ArticleDao {
+public abstract class ArticleDao {
 
     @Query("SELECT * FROM articles")
-    Flowable<List<Article>> getArticles();
+    abstract Flowable<List<Article>> getArticles();
 
     @Query("SELECT * FROM articles LIMIT 1")
-    Article getOneArticle();
+    abstract Article getOneArticle();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insertArticle(Article article);
+    abstract Long insertArticle(Article article);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insertArticles(List<Article> articles);
+    abstract List<Long> insertArticles(List<Article> articles);
 
     @Query("DELETE FROM articles")
-    Completable deleteAllArticles();
+    abstract void deleteAllArticles();
+
+    @Transaction
+    public List<Long> rewriteArticles(List<Article> articles) {
+        deleteAllArticles();
+        return insertArticles(articles);
+    }
 }

@@ -17,28 +17,38 @@
 package nildencorp.apps.rbcnews.di;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
-import nildencorp.apps.rbcnews.model.ArticleDao;
+import nildencorp.apps.rbcnews.model.ArticleDataSource;
 import nildencorp.apps.rbcnews.model.ArticlesDatabase;
-import nildencorp.apps.rbcnews.model.LocalArticleDataSource;
+import nildencorp.apps.rbcnews.network.ConnectivityController;
 import nildencorp.apps.rbcnews.ui.ViewModelFactory;
 
 public class Injection {
 
     private static ViewModelFactory viewModelFactory;
-    private static LocalArticleDataSource localArticleDataSource;
+    private static ArticleDataSource articleDataSource;
+    private static ConnectivityManager connectivityManager;
 
-    private static ArticleDao provideUserDataSource(Context context) {
+    private static ArticleDataSource provideUserDataSource(Context context) {
         ArticlesDatabase database = ArticlesDatabase.getInstance(context);
-        if (localArticleDataSource == null)
-            localArticleDataSource = new LocalArticleDataSource(database.articleDao());
-        return localArticleDataSource;
+        ConnectivityController connectivityController = new ConnectivityController(provideConnectivityManager(context));
+        if (articleDataSource == null)
+            articleDataSource = new ArticleDataSource(database.articleDao(), connectivityController);
+        return articleDataSource;
     }
 
     public static ViewModelFactory provideViewModelFactory(Context context) {
-        ArticleDao dataSource = provideUserDataSource(context);
+        ArticleDataSource dataSource = provideUserDataSource(context);
         if (viewModelFactory == null)
             viewModelFactory = new ViewModelFactory(dataSource);
         return viewModelFactory;
     }
+
+    private static ConnectivityManager provideConnectivityManager(Context context) {
+        if (connectivityManager == null)
+            connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager;
+    }
+
 }

@@ -1,6 +1,7 @@
 package nildencorp.apps.rbcnews.ui;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import nildencorp.apps.rbcnews.R;
 import nildencorp.apps.rbcnews.adapter.ArticleAdapter;
 import nildencorp.apps.rbcnews.di.Injection;
@@ -18,6 +20,7 @@ import nildencorp.apps.rbcnews.model.Article;
 
 public class MainActivity extends AppCompatActivity {
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ViewModelFactory mViewModelFactory;
     private ArticleViewModel mViewModel;
     private ArticleAdapter mAdapter;
@@ -39,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateArticles();
-                mSwipeRefreshLayout.setRefreshing(false);
+                mViewModel.updateArticles();
             }
         });
     }
@@ -52,15 +54,25 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ArticleAdapter(articles);
         recyclerView.setAdapter(mAdapter);
-        updateArticles();
-    }
-
-    public void updateArticles() {
-        mViewModel.getArticles().observeOn(AndroidSchedulers.mainThread())
+        compositeDisposable.add(mViewModel.getUpdatingResultSource()
+                .subscribe(
+                        resultMessage -> {
+                            Toast.makeText(this, resultMessage, Toast.LENGTH_SHORT).show();
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                ));
+        compositeDisposable.add(mViewModel.getArticles()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(articlesList -> {
-                    articles = articlesList;
+                    articles.clear();
+                    articles.addAll(articlesList);
                     mAdapter.notifyDataSetChanged();
-                });
+                }));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
 }

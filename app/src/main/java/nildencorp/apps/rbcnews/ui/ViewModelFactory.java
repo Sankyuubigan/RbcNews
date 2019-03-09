@@ -1,16 +1,16 @@
 
 package nildencorp.apps.rbcnews.ui;
 
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModel;
-import nildencorp.apps.rbcnews.model.ArticleDao;
+import androidx.lifecycle.ViewModelProvider;
+import nildencorp.apps.rbcnews.model.ArticleDataSource;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-    private final ArticleDao mDataSource;
+    private final ArticleDataSource mDataSource;
 
-    public ViewModelFactory(ArticleDao dataSource) {
-        mDataSource = dataSource;
+    public ViewModelFactory(ArticleDataSource mDataSource) {
+        this.mDataSource = mDataSource;
     }
 
     @Override
